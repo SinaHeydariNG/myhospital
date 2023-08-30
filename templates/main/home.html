@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+
+
+
+<section class="book_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+       <form method="POST" action={% url 'appointments:submit' %} class='appointment-form'>
+        {% csrf_token %}
+        {% for field in  appoint_form%}
+        <div class='form-control'>
+          <span>
+        {{field.label}}
+      </span>
+        {{field}}
+      </div>
+        {% endfor %}
+        <div>
+        <input type='submit' value='ارسال'/>
+      </div>
+       </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- end book section -->
+
+
+  <!-- about section -->
+
+  <section class="about_section">
+    <div class="container  ">
+      <div class="row">
+        <div class="col-md-6 ">
+          <div class="img-box">
+            <img src="{% static 'images/about-img.jpg' %}" alt="">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="detail-box">
+            <div class="heading_container">
+              <h2>
+                درباره <span>{{information.title}}</span>
+              </h2>
+            </div>
+            <p>
+{{about.description | safe}}            </p>
+            <a href="">
+              بیشتر
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end about section -->
+
+
+  <!-- treatment section -->
+
+  <section class="treatment_section layout_padding">
+    <div class="side_img">
+      <img src="images/treatment-side-img.jpg" alt="">
+    </div>
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          روش های <span>درمانی</span>
+        </h2>
+      </div>
+      <div class="row">
+
+
+      {% for treatment in treatments%}
+        <div class="col-md-6 col-lg-3">
+          <div class="box ">
+            <div class="img-box">
+              <img src="{{treatment.images.url}}" alt="">
+            </div>
+            <div class="detail-box">
+              <h4>
+               {{treatment.title}}
+              </h4>
+              <p>
+                {{treatment.description | safe}}    
+                        </p>
+              <a href="">
+           مشاهده
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- end treatment section -->
+
+  <!-- team section -->
+
+  <section class="team_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+   بیمارستان<span> دکتر های</span>
+        </h2>
+      </div>
+      <div class="carousel-wrap ">
+        <div class="owl-carousel team_carousel">
+        {% for  doctor in doctors%}
+          <div class="item">
+            <div class="box">
+              <div class="img-box">
+                <img src="{{doctor.images.url}}" class="" alt="" />
+              </div>
+              <div class="detail-box">
+                <h5>
+                  {{doctor.name}}
+                </h5>
+                <h6>
+                  {{doctor.lastname}}
+                </h6>
+                <div class="social_box">
+                  <a href="">
+                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                  </a>
+                  <a href="">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                  </a>
+                  <a href="">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                  </a>
+                  <a href="">
+                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- end team section -->
+
+
+  <!-- client section -->
+  <section class="client_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          <span>نظرات کاربران</span>
+        </h2>
+      </div>
+    </div>
+    <div class="container px-0">
+      <div id="customCarousel2" class="carousel  carousel-fade" data-ride="carousel">
+        <div class="carousel-inner">
+        {% for user_meesage in all_messages %}
+          <div class="carousel-item {% if user_meesage.id == 1 %} active {% endif %}">
+            <div class="box">
+              <div class="client_info">
+                <div class="client_name">
+                  <h5>
+                    {{user_meesage.name}}
+                  </h5>
+                  <h6>
+                    {{user_meesage.email}}
+                  </h6>
+                </div>
+                <i class="fa fa-quote-left" aria-hidden="true"></i>
+              </div>
+              <p>
+                {{user_meesage.message}}              </p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="carousel_btn-box">
+          <a class="carousel-control-prev" href="#customCarousel2" role="button" data-slide="prev">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+            <span class="sr-only">قبلی</span>
+          </a>
+          <a class="carousel-control-next" href="#customCarousel2" role="button" data-slide="next">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <span class="sr-only">بعدی</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end client section -->
+
+  <!-- contact section -->
+  <section class="contact_section layout_padding-bottom">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+        تماس با ما
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-7">
+          <div class="form_container">
+            <form action="{% url 'contact:submit' %}" method="POST">
+            {% csrf_token %}
+              {% for field in contact_form %}
+              {{field.label}}
+              {{field}}
+              {% endfor %}
+              <div class="btn_box">
+                <button>
+                  ارسال
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="img-box">
+            <img src="images/contact-img.jpg" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end contact section -->
+{% endblock content %}
